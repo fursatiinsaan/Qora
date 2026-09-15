@@ -2,550 +2,252 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qora AI — Autonomous Financial Immune System (Live Demo)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Qora — AI Business Partner for Paytm Merchants</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg-base: #050508;
-    --bg-card: #0a0a0f;
-    --bg-card-hover: #101018;
-    --border-dim: #1f1f28;
-    --border-bright: #383848;
-    --border-accent: #ffffff;
-    --text-high: #f4f4f8;
-    --text-mid: #a0a0b2;
-    --text-low: #606072;
-    --accent: #ffffff;
-    --danger: #ff4757;
-    --success: #2ed573;
-    --warning: #ffa502;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-  body { background-color: var(--bg-base); color: var(--text-high); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
-
-  /* TOP NAV */
-  header {
-    height: 72px;
-    border-bottom: 1px solid var(--border-dim);
-    padding: 0 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(10, 10, 15, 0.85);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo-block { display: flex; align-items: center; gap: 14px; }
-  .logo-badge {
-    width: 38px; height: 38px; border: 2px solid #fff; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 900; background: #000;
-  }
-  .brand-title { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
-  .nav-tabs { display: flex; gap: 8px; background: #0c0c12; padding: 5px; border-radius: 10px; border: 1px solid var(--border-dim); }
-  .nav-btn {
-    background: transparent; border: none; color: var(--text-mid); padding: 8px 18px;
-    border-radius: 7px; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
-  }
-  .nav-btn.active { background: #1c1c28; color: #fff; border: 1px solid var(--border-bright); }
-  .header-actions { display: flex; align-items: center; gap: 14px; }
-  .status-pill {
-    display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; padding: 6px 12px; border-radius: 20px; background: #0d1a10; color: #4cd137; border: 1px solid #1c3c20;
-  }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4cd137; box-shadow: 0 0 10px #4cd137; }
-
-  /* MAIN CONTAINER */
-  main { flex: 1; padding: 32px 40px; max-width: 1720px; margin: 0 auto; width: 100%; }
-
-  /* KPI BAR */
-  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-  .kpi-card {
-    background: var(--bg-card); border: 1px solid var(--border-dim); border-radius: 12px; padding: 22px;
-    display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .kpi-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .kpi-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-low); font-family: 'JetBrains Mono', monospace; }
-  .kpi-value { font-size: 34px; font-weight: 900; letter-spacing: -0.03em; font-family: 'JetBrains Mono', monospace; }
-  .kpi-sub { font-size: 12.5px; color: var(--text-mid); margin-top: 4px; }
-
-  /* VIEW CONTAINERS */
-  .view-container { display: none; }
-  .view-container.active { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* HUB 1: TRIBUNAL WAR ROOM */
-  .warroom-layout { display: grid; grid-template-columns: 360px 1fr; gap: 28px; }
-  .inbound-panel {
-    background: var(--bg-card); border: 1px solid var(--border-dim); border-radius: 14px; padding: 24px;
-    display: flex; flex-direction: column; gap: 18px; height: fit-content;
-  }
-  .panel-title { font-size: 15px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-mid); font-family: 'JetBrains Mono', monospace; }
-  .scenario-btn {
-    background: #0f0f18; border: 1px solid var(--border-dim); border-radius: 10px; padding: 16px;
-    text-align: left; cursor: pointer; transition: all 0.2s; color: var(--text-high); display: flex; flex-direction: column; gap: 6px;
-  }
-  .scenario-btn:hover { border-color: var(--border-bright); background: #151522; }
-  .scenario-btn.selected { border-color: #fff; background: #181826; }
-  .scenario-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; padding: 3px 6px; border-radius: 4px; width: fit-content; }
-  .tag-danger { background: #26080b; color: #ff5e57; border: 1px solid #4a151b; }
-  .tag-warning { background: #261b05; color: #ffa801; border: 1px solid #4a3810; }
-  .tag-clean { background: #081f10; color: #0be881; border: 1px solid #104220; }
-  .action-primary {
-    background: #fff; color: #000; font-weight: 700; border: none; padding: 14px;
-    border-radius: 9px; cursor: pointer; font-size: 14px; transition: opacity 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
-  }
-  .action-primary:hover { opacity: 0.9; }
-
-  /* TRIBUNAL STAGE */
-  .stage-panel { background: var(--bg-card); border: 1px solid var(--border-dim); border-radius: 14px; padding: 30px; }
-  .tribunal-grid { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 20px; margin-top: 24px; }
-  .agent-box {
-    background: #07070b; border: 1px solid var(--border-dim); border-radius: 12px; padding: 22px;
-    display: flex; flex-direction: column; min-height: 480px; position: relative;
-  }
-  .agent-box.judge-box { border-color: #ffffff; background: #0c0c14; }
-  .agent-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1a1a24; padding-bottom: 14px; margin-bottom: 16px; }
-  .agent-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
-  .agent-status-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-low); }
-  .speech-stream { display: flex; flex-direction: column; gap: 12px; flex: 1; font-size: 13.5px; line-height: 1.6; }
-  .speech-card { background: #0d0d15; border: 1px solid #1e1e2c; border-radius: 8px; padding: 14px; }
-  .speech-card.sustained { border-color: #ff5e57; background: #160809; color: #fff; }
-  .speech-card.dismissed { border-color: #1c1c24; color: var(--text-low); text-decoration: line-through; }
-  .speech-card.final { border-color: #fff; background: #141422; color: #fff; }
-
-  /* ENTERPRO ROUTE BANNER */
-  .enterpro-banner {
-    margin-top: 24px; background: #0e121a; border: 1px solid #203048; border-radius: 10px; padding: 18px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  /* HUB 2: VENDOR OBSERVATORY */
-  .observatory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .vendor-card { background: var(--bg-card); border: 1px solid var(--border-dim); border-radius: 14px; padding: 28px; }
-  .trust-score-row { display: flex; align-items: center; gap: 24px; margin: 20px 0; }
-  .score-dial {
-    width: 100px; height: 100px; border-radius: 50%; border: 6px solid #ff4757;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 900;
-  }
-  .score-dial.healthy { border-color: #2ed573; }
-
-  /* HUB 3: RED TEAM COMMAND */
-  .redteam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .attack-row {
-    background: #0d0d15; border: 1px solid #1c1c28; border-radius: 10px; padding: 16px 20px;
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050508;--card:#0a0a0f;--card2:#0e0e16;--border:#1a1a24;--border2:#2a2a38;--hi:#fff;--mid:#a0a0b2;--lo:#606072;--ok:#2ed573;--warn:#ffa502;--err:#ff4757;--font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace}
+html,body{height:100%;background:var(--bg);color:var(--hi);font-family:var(--font);overflow-x:hidden}
+.app{display:flex;height:100vh}
+.sidebar{width:240px;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;background:#070710}
+.sidebar-brand{padding:24px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;border:2px solid #fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font:900 18px var(--mono);background:#000}
+.brand-text{font-size:20px;font-weight:900;letter-spacing:-0.03em}
+.brand-sub{font-size:10px;color:var(--lo);font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase}
+.sidebar-nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;gap:4px}
+.nav-item{padding:10px 14px;border-radius:8px;font-size:13.5px;font-weight:500;color:var(--mid);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .15s}
+.nav-item:hover{background:#111;color:#fff}
+.nav-item.active{background:#161624;color:#fff;font-weight:700;border:1px solid var(--border)}
+.nav-icon{width:18px;text-align:center;font-size:14px}
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--lo);font-family:var(--mono)}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px;box-shadow:0 0 8px var(--ok)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.pill{font:600 11px var(--mono);padding:5px 10px;border-radius:16px;border:1px solid var(--border);color:var(--mid)}
+.pill.live{background:#0d1a10;color:var(--ok);border-color:#1c3c20}
+.content{flex:1;overflow-y:auto;padding:24px 28px}
+.view{display:none}.view.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.kpi-label{font:700 10px var(--mono);color:var(--lo);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.kpi-val{font:900 28px var(--mono);letter-spacing:-0.03em}
+.kpi-sub{font-size:11.5px;color:var(--mid);margin-top:3px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px}
+.card.hi{border-color:#fff;background:var(--card2)}
+.card-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.tag{font:700 10px var(--mono);padding:3px 8px;border-radius:4px;letter-spacing:0.06em}
+.tag-ok{background:#0d1a10;color:var(--ok);border:1px solid #1c3c20}
+.tag-warn{background:#1a1508;color:var(--warn);border:1px solid #3a3010}
+.tag-err{background:#1a0808;color:var(--err);border:1px solid #3a1515}
+.tag-w{background:#1a1a28;color:#fff;border:1px solid #3a3a50}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font:700 10px var(--mono);color:var(--lo);letter-spacing:0.08em;text-transform:uppercase;padding:10px 12px;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid #111118;color:var(--mid)}
+.tbl td:first-child{color:#fff;font-weight:600}
+.tbl tr:hover td{background:#0c0c14}
+.btn{background:#fff;color:#000;font-weight:700;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-outline{background:transparent;color:#fff;border:1px solid var(--border2);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;transition:all .15s}
+.btn-outline:hover{border-color:#fff}
+.chat-container{display:flex;flex-direction:column;height:calc(100vh - 56px - 48px)}
+.chat-messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:75%;padding:14px 18px;border-radius:12px;font-size:14px;line-height:1.6}
+.msg.user{align-self:flex-end;background:#1c1c2e;border:1px solid var(--border2);color:#fff}
+.msg.bot{align-self:flex-start;background:var(--card);border:1px solid var(--border);color:var(--mid)}
+.msg.bot strong{color:#fff}
+.msg .src{font:500 10px var(--mono);color:var(--lo);margin-top:8px;display:block}
+.chat-input-bar{border-top:1px solid var(--border);padding:16px 28px;display:flex;gap:12px;align-items:center;flex-shrink:0}
+.chat-input{flex:1;background:#0c0c14;border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:#fff;font-size:14px;font-family:var(--font);outline:none}
+.chat-input:focus{border-color:var(--border2)}
+.chat-input::placeholder{color:var(--lo)}
+.voice-btn{width:44px;height:44px;border-radius:50%;border:2px solid #fff;background:transparent;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.voice-btn:hover{background:#fff;color:#000}
+.voice-btn.recording{background:var(--err);border-color:var(--err);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,71,87,.4)}50%{box-shadow:0 0 0 12px rgba(255,71,87,0)}}
+.supp-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #111118}
+.supp-row:last-child{border:none}
+.supp-name{font-weight:600;font-size:14px}
+.supp-detail{font-size:12px;color:var(--mid);margin-top:2px}
+.supp-amt{font:700 15px var(--mono);text-align:right}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:160px;padding-top:10px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.bar{width:100%;border-radius:4px 4px 0 0}
+.bar-label{font:500 10px var(--mono);color:var(--lo)}
+.bar-val{font:600 10px var(--mono);color:var(--mid)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:32px;max-width:520px;width:90%}
+.modal h3{font-size:20px;font-weight:800;margin-bottom:14px}
+.modal p{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:18px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#222;border-radius:3px}
 </style>
 </head>
 <body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="logo">Q</div><div><div class="brand-text">QORA</div><div class="brand-sub">Merchant AI Partner</div></div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="go('dashboard')"><span class="nav-icon">&#9634;</span>Dashboard</div>
+      <div class="nav-item" onclick="go('copilot')"><span class="nav-icon">&#9672;</span>Voice Copilot</div>
+      <div class="nav-item" onclick="go('suppliers')"><span class="nav-icon">&#9671;</span>Supplier Ledger</div>
+      <div class="nav-item" onclick="go('cashflow')"><span class="nav-icon">&#9670;</span>Cashflow & Credit</div>
+      <div class="nav-item" onclick="go('automation')"><span class="nav-icon">&#9678;</span>Automations</div>
+    </nav>
+    <div class="sidebar-footer"><div class="dot-live"></div>Sarvam + n8n + Cognee</div>
+  </aside>
+  <div class="main">
+    <div class="topbar"><div class="topbar-title" id="page-title">Dashboard</div><div class="topbar-right"><span class="pill">TEAM QUARDERS</span><span class="pill live"><span class="dot-live"></span>QORA ACTIVE</span></div></div>
+    <div class="content">
 
-<header>
-  <div class="logo-block">
-    <div class="logo-badge">Q</div>
-    <div>
-      <div class="brand-title">QORA AI</div>
-      <div style="font-size:11px; color:#707084; font-family:'JetBrains Mono',monospace;">ADVERSARIAL FINANCIAL IMMUNE SYSTEM</div>
+      <div class="view active" id="v-dashboard">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Today's Revenue</div><div class="kpi-val">&#8377;48,720</div><div class="kpi-sub">+12.3% vs yesterday</div></div>
+          <div class="kpi"><div class="kpi-label">Transactions</div><div class="kpi-val">342</div><div class="kpi-sub">UPI: 298 | Card: 31 | Cash: 13</div></div>
+          <div class="kpi"><div class="kpi-label">Pending Payables</div><div class="kpi-val" style="color:var(--warn)">&#8377;1,24,500</div><div class="kpi-sub">3 suppliers | 2 overdue</div></div>
+          <div class="kpi"><div class="kpi-label">Khata Outstanding</div><div class="kpi-val">&#8377;18,350</div><div class="kpi-sub">12 customers | 4 overdue</div></div>
+        </div>
+        <div class="g2" style="margin-bottom:20px">
+          <div class="card"><div class="card-title">Weekly Revenue<span class="tag tag-ok">+8.2% WoW</span></div><div class="bar-chart" id="rev-chart"></div></div>
+          <div class="card"><div class="card-title">Qora Alerts<span class="tag tag-warn">3 PENDING</span></div>
+            <div class="supp-row"><div><div class="supp-name" style="color:var(--err)">Supplier Overcharge</div><div class="supp-detail">Amul billed &#8377;2,340 for 20 units vs contracted &#8377;2,160. Delta &#8377;180.</div></div><button class="btn-outline" onclick="openModal('dispute')">Dispute</button></div>
+            <div class="supp-row"><div><div class="supp-name" style="color:var(--warn)">Khata Reminder</div><div class="supp-detail">Rajesh Kumar &#8377;3,200 outstanding 14 days.</div></div><button class="btn-outline" onclick="alert('WhatsApp reminder sent')">Send</button></div>
+            <div class="supp-row"><div><div class="supp-name" style="color:var(--ok)">Restock Alert</div><div class="supp-detail">Bread up 40%. Stock: 8. Stockout tomorrow 2 PM.</div></div><button class="btn-outline" onclick="alert('Reorder: 30 units via n8n')">Reorder</button></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">Recent Transactions</div>
+          <table class="tbl"><thead><tr><th>Time</th><th>Customer</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+            <tr><td>11:42</td><td>Priya S.</td><td>UPI</td><td style="color:var(--ok)">+&#8377;580</td><td><span class="tag tag-ok">SETTLED</span></td></tr>
+            <tr><td>11:38</td><td>Walk-in</td><td>Cash</td><td style="color:var(--ok)">+&#8377;120</td><td><span class="tag tag-ok">SETTLED</span></td></tr>
+            <tr><td>11:35</td><td>Amit K.</td><td>UPI</td><td style="color:var(--warn)">+&#8377;1,450</td><td><span class="tag tag-warn">CREDIT</span></td></tr>
+            <tr><td>11:20</td><td>Deepak R.</td><td>Card</td><td style="color:var(--ok)">+&#8377;2,340</td><td><span class="tag tag-ok">SETTLED</span></td></tr>
+            <tr><td>11:12</td><td>Sunita D.</td><td>UPI</td><td style="color:var(--ok)">+&#8377;890</td><td><span class="tag tag-ok">SETTLED</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="view" id="v-copilot">
+        <div class="chat-container">
+          <div class="chat-messages" id="chat-msgs">
+            <div class="msg bot"><strong>Qora AI Copilot</strong><br>Namaste! Main aapka AI business partner. Hindi, English ya koi bhi bhasha mein poochein.<br><br>Try: "Aaj kitna galla aaya?" | "Amul waale ko kitna dena?" | "Rajesh ka khata?"<span class="src">SARVAM AI + COGNEE MEMORY</span></div>
+          </div>
+          <div class="chat-input-bar">
+            <input class="chat-input" id="chat-in" placeholder="Type or speak..." onkeydown="if(event.key==='Enter')sendMsg()">
+            <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">&#127908;</button>
+            <button class="btn" onclick="sendMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="view" id="v-suppliers">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Total Payables</div><div class="kpi-val">&#8377;1,24,500</div></div>
+          <div class="kpi"><div class="kpi-label">Overdue</div><div class="kpi-val" style="color:var(--err)">&#8377;47,800</div></div>
+          <div class="kpi"><div class="kpi-label">Bills Audited</div><div class="kpi-val">38</div></div>
+          <div class="kpi"><div class="kpi-label">Overcharges Caught</div><div class="kpi-val" style="color:var(--ok)">&#8377;2,940</div></div>
+        </div>
+        <div class="g2" style="margin-bottom:20px">
+          <div class="card"><div class="card-title">Suppliers<span class="tag tag-w">5 ACTIVE</span></div>
+            <div class="supp-row"><div><div class="supp-name">Amul Distributor</div><div class="supp-detail">Dairy | Weekly | Sep 14</div></div><div class="supp-amt" style="color:var(--err)">&#8377;32,400<br><span style="font-size:10px;color:var(--lo)">OVERDUE 3D</span></div></div>
+            <div class="supp-row"><div><div class="supp-name">Nova Bakery</div><div class="supp-detail">Bread | Daily | Sep 15</div></div><div class="supp-amt">&#8377;8,600</div></div>
+            <div class="supp-row"><div><div class="supp-name">Ravi Cold Drinks</div><div class="supp-detail">Beverages | Bi-weekly | Sep 10</div></div><div class="supp-amt" style="color:var(--err)">&#8377;15,400<br><span style="font-size:10px;color:var(--lo)">OVERDUE 5D</span></div></div>
+            <div class="supp-row"><div><div class="supp-name">Metro Wholesale</div><div class="supp-detail">FMCG | Monthly | Sep 1</div></div><div class="supp-amt">&#8377;56,200</div></div>
+            <div class="supp-row"><div><div class="supp-name">Haldiram Snacks</div><div class="supp-detail">Snacks | Weekly | Sep 13</div></div><div class="supp-amt">&#8377;11,900</div></div>
+          </div>
+          <div class="card hi"><div class="card-title">Bill Audit<span class="tag tag-err">1 ANOMALY</span></div>
+            <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px">Qora scans every invoice against contracted rates and delivery receipts.</div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:700;color:var(--err)">OVERCHARGE: Amul</span><span class="tag tag-err">DISPUTED</span></div><div style="font-size:12.5px;color:var(--mid);line-height:1.6">#AMU-2609: &#8377;2,340 for 20 units @ &#8377;117. Contracted &#8377;108. <strong style="color:#fff">+&#8377;180</strong>.<br><span style="color:var(--lo)">Cognee: 2 of 8 bills overcharged (+&#8377;460 total)</span></div></div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:14px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:700;color:var(--ok)">VERIFIED: Nova Bakery</span><span class="tag tag-ok">CLEAN</span></div><div style="font-size:12.5px;color:var(--mid)">#NB-1509: &#8377;8,600. All items match. 0 variance.</div></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">Khata Ledger<span class="tag tag-warn">4 OVERDUE</span></div>
+          <table class="tbl"><thead><tr><th>Customer</th><th>Outstanding</th><th>Days</th><th>Action</th></tr></thead><tbody>
+            <tr><td>Rajesh Kumar</td><td style="color:var(--err)">&#8377;3,200</td><td>14</td><td><button class="btn-outline" onclick="alert('Reminder sent via n8n WhatsApp')">Remind</button></td></tr>
+            <tr><td>Sunita Devi</td><td style="color:var(--warn)">&#8377;1,850</td><td>8</td><td><button class="btn-outline" onclick="alert('Sent')">Remind</button></td></tr>
+            <tr><td>Amit Khanna</td><td style="color:var(--warn)">&#8377;4,500</td><td>10</td><td><button class="btn-outline" onclick="alert('Sent')">Remind</button></td></tr>
+            <tr><td>Deepak Raj</td><td style="color:var(--err)">&#8377;6,200</td><td>21</td><td><button class="btn-outline" onclick="alert('Sent')">Remind</button></td></tr>
+            <tr><td>Priya Sharma</td><td>&#8377;900</td><td>3</td><td><span style="font-size:11px;color:var(--lo)">Not due</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="view" id="v-cashflow">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Week Inflow</div><div class="kpi-val" style="color:var(--ok)">&#8377;3,41,200</div></div>
+          <div class="kpi"><div class="kpi-label">Week Outflow</div><div class="kpi-val" style="color:var(--err)">&#8377;2,18,400</div></div>
+          <div class="kpi"><div class="kpi-label">Net Cash</div><div class="kpi-val">&#8377;1,22,800</div></div>
+          <div class="kpi"><div class="kpi-label">Credit Eligible</div><div class="kpi-val" style="color:var(--ok)">&#8377;75,000</div><div class="kpi-sub">Paytm Sachet Pre-approved</div></div>
+        </div>
+        <div class="g2" style="margin-bottom:20px">
+          <div class="card"><div class="card-title">7-Day Forecast</div><div class="bar-chart" id="cf-chart"></div></div>
+          <div class="card hi"><div class="card-title">Sachet Capital<span class="tag tag-ok">PRE-APPROVED</span></div>
+            <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px">Based on Soundbox avg &#8377;48K/day and repayment history.</div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--lo);font-size:13px">Credit</span><span style="font:800 22px var(--mono);color:var(--ok)">&#8377;75,000</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--lo);font-size:13px">Rate</span><span style="font:600 14px var(--mono)">1.2%/mo</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--lo);font-size:13px">Debit</span><span style="font:600 14px var(--mono)">Daily from Soundbox</span></div>
+            </div>
+            <button class="btn" onclick="openModal('loan')">Apply &#8377;25,000 Credit</button>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">Payment Schedule</div>
+          <table class="tbl"><thead><tr><th>Supplier</th><th>Amount</th><th>Due</th><th>Status</th><th></th></tr></thead><tbody>
+            <tr><td>Amul</td><td style="color:var(--err)">&#8377;32,400</td><td>Sep 12</td><td><span class="tag tag-err">OVERDUE</span></td><td><button class="btn-outline" onclick="alert('Payment initiated')">Pay</button></td></tr>
+            <tr><td>Ravi Cold Drinks</td><td style="color:var(--err)">&#8377;15,400</td><td>Sep 10</td><td><span class="tag tag-err">OVERDUE</span></td><td><button class="btn-outline" onclick="alert('Payment initiated')">Pay</button></td></tr>
+            <tr><td>Metro</td><td>&#8377;56,200</td><td>Sep 30</td><td><span class="tag tag-ok">ON TIME</span></td><td><span style="font-size:11px;color:var(--lo)">Scheduled</span></td></tr>
+            <tr><td>Haldiram</td><td>&#8377;11,900</td><td>Sep 20</td><td><span class="tag tag-ok">ON TIME</span></td><td><span style="font-size:11px;color:var(--lo)">Scheduled</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+
+      <div class="view" id="v-automation">
+        <div class="kpi-row">
+          <div class="kpi"><div class="kpi-label">Workflows</div><div class="kpi-val">7</div></div>
+          <div class="kpi"><div class="kpi-label">Runs Today</div><div class="kpi-val">23</div></div>
+          <div class="kpi"><div class="kpi-label">Time Saved</div><div class="kpi-val">4.2 hrs</div></div>
+          <div class="kpi"><div class="kpi-label">Engine</div><div class="kpi-val" style="font-size:18px">n8n + Cognee</div></div>
+        </div>
+        <div class="g2">
+          <div class="card"><div class="card-title">n8n Workflows</div>
+            <div class="supp-row"><div><div class="supp-name">Khata Reminder</div><div class="supp-detail">WhatsApp when credit >7 days. Daily 9 AM.</div></div><span class="tag tag-ok">RUNNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Bill Scanner</div><div class="supp-detail">Scans WhatsApp invoices, checks rates.</div></div><span class="tag tag-ok">RUNNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Restock Trigger</div><div class="supp-detail">Predicts stockout, drafts reorder.</div></div><span class="tag tag-ok">RUNNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Daily P&L</div><div class="supp-detail">WhatsApp summary at 10 PM.</div></div><span class="tag tag-ok">RUNNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Payment Alert</div><div class="supp-detail">2-day advance supplier due alerts.</div></div><span class="tag tag-ok">RUNNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Festival Predictor</div><div class="supp-detail">Cognee seasonal demand forecasting.</div></div><span class="tag tag-warn">LEARNING</span></div>
+            <div class="supp-row"><div><div class="supp-name">Auto Credit</div><div class="supp-detail">Applies sachet loan on cashflow dip.</div></div><span class="tag tag-ok">RUNNING</span></div>
+          </div>
+          <div class="card"><div class="card-title">Cognee Memory<span class="tag tag-w">GRAPH</span></div>
+            <div style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px">Persistent merchant memory engine.</div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px"><div style="font-weight:700;font-size:13px;margin-bottom:6px">Customer Patterns</div><div style="font-size:12px;color:var(--mid);line-height:1.6">Rajesh: dairy+bread Mon/Thu (~&#8377;450)<br>Priya: grocery Sat AM (~&#8377;1,200)<br>Peak: 10-11 AM, 5-7 PM</div></div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px"><div style="font-weight:700;font-size:13px;margin-bottom:6px">Supplier Intel</div><div style="font-size:12px;color:var(--mid);line-height:1.6">Amul: 2/8 overcharges (flagged)<br>Nova: 100% clean (24 bills)<br>Metro: 2% discount if paid in 7d</div></div>
+            <div style="background:#0d0d18;border:1px solid var(--border);border-radius:8px;padding:14px"><div style="font-weight:700;font-size:13px;margin-bottom:6px">Seasonal</div><div style="font-size:12px;color:var(--mid);line-height:1.6">Navratri: Snacks +180%<br>Diwali: Dry fruit 3x<br>Monday: Bread 2x</div></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <div class="nav-tabs">
-    <button class="nav-btn active" onclick="switchTab('warroom')">01 · Tribunal War Room</button>
-    <button class="nav-btn" onclick="switchTab('observatory')">02 · Vendor Trust Radar</button>
-    <button class="nav-btn" onclick="switchTab('redteam')">03 · Red Team Pen-Test</button>
-  </div>
-
-  <div class="header-actions">
-    <div class="status-pill">
-      <div class="status-dot"></div>
-      <span>3x QWEN + ENTERPRO LIVE</span>
-    </div>
-  </div>
-</header>
-
-<main>
-  <!-- KPI ROW -->
-  <section class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-header"><span class="kpi-label">Volume Audited</span></div>
-      <div class="kpi-value" id="kpi-volume">$2,840,900</div>
-      <div class="kpi-sub">142 Invoices Ingested (&lt;15ms)</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-header"><span class="kpi-label">Leakage Prevented</span></div>
-      <div class="kpi-value" id="kpi-saved" style="color:#2ed573;">$87,420</div>
-      <div class="kpi-sub">Uncontracted Overcharges Stopped</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-header"><span class="kpi-label">False Positive Rate</span></div>
-      <div class="kpi-value">1.4%</div>
-      <div class="kpi-sub">Down from industry 40% avg</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-header"><span class="kpi-label">Autonomous Reconcile</span></div>
-      <div class="kpi-value">67.8%</div>
-      <div class="kpi-sub">Straight-through EnterPro Tier 1</div>
-    </div>
-  </section>
-
-  <!-- VIEW 1: TRIBUNAL WAR ROOM -->
-  <section id="view-warroom" class="view-container active">
-    <div class="warroom-layout">
-      <!-- Inbound Scenarios -->
-      <div class="inbound-panel">
-        <div class="panel-title">Inbound Invoice Feeds</div>
-
-        <div class="scenario-btn selected" id="scen-1" onclick="selectScenario(1)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-weight:700;">INV-4089 · Apex Cloud</span>
-            <span class="scenario-tag tag-warning">RATE INFLATION</span>
-          </div>
-          <div style="font-size:12px; color:#888;">$19,800.00 · Dev Consulting</div>
-          <div style="font-size:11px; color:#666;">3 Detected Anomalies (1 Real)</div>
-        </div>
-
-        <div class="scenario-btn" id="scen-2" onclick="selectScenario(2)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-weight:700;">INV-9120 · CyberCore Inc</span>
-            <span class="scenario-tag tag-danger">WIRE TAMPERING</span>
-          </div>
-          <div style="font-size:12px; color:#888;">$64,000.00 · Security Audit</div>
-          <div style="font-size:11px; color:#666;">IBAN wire route modified 24h ago</div>
-        </div>
-
-        <div class="scenario-btn" id="scen-3" onclick="selectScenario(3)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-weight:700;">INV-1033 · Nova Logistics</span>
-            <span class="scenario-tag tag-clean">CLEAN 100%</span>
-          </div>
-          <div style="font-size:12px; color:#888;">$3,450.00 · Freight Services</div>
-          <div style="font-size:11px; color:#666;">Exact 3-way match · Auto-approve</div>
-        </div>
-
-        <button class="action-primary" id="btn-trigger" onclick="runTribunalDebate()">
-          <span>Trigger Live Tribunal Audit</span>
-          <span>→</span>
-        </button>
-      </div>
-
-      <!-- Live Stage -->
-      <div class="stage-panel">
-        <div style="display:flex; justify-content:space-between; align-items:baseline;">
-          <div>
-            <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;" id="stage-invoice-title">Invoice #INV-4089: Apex Cloud Consulting</h2>
-            <p style="font-size:14px; color:#888; margin-top:4px;" id="stage-invoice-sub">Matching against Master Service Agreement MSA-2025-Apex (Exhibit B)</p>
-          </div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#888;" id="audit-timer">Latency: 0.82s</div>
-        </div>
-
-        <!-- 3-Agent Grid -->
-        <div class="tribunal-grid">
-          <!-- Prosecutor -->
-          <div class="agent-box">
-            <div class="agent-header">
-              <span class="agent-badge">PROSECUTOR (QWEN)</span>
-              <span class="agent-status-tag" id="status-pros">IDLE</span>
-            </div>
-            <div class="speech-stream" id="stream-pros">
-              <div class="speech-card" style="color:#666;">Select an inbound invoice and trigger the debate to watch real-time prosecution.</div>
-            </div>
-          </div>
-
-          <!-- Defender -->
-          <div class="agent-box">
-            <div class="agent-header">
-              <span class="agent-badge">DEFENDER (QWEN)</span>
-              <span class="agent-status-tag" id="status-def">IDLE</span>
-            </div>
-            <div class="speech-stream" id="stream-def">
-              <div class="speech-card" style="color:#666;">Awaiting prosecutor findings to cross-reference contract amendments and vendor context.</div>
-            </div>
-          </div>
-
-          <!-- Judge -->
-          <div class="agent-box judge-box">
-            <div class="agent-header">
-              <span class="agent-badge" style="color:#fff;">JUDGE (QWEN)</span>
-              <span class="agent-status-tag" id="status-judge">IDLE</span>
-            </div>
-            <div class="speech-stream" id="stream-judge">
-              <div class="speech-card" style="color:#666;">Awaiting debate completion to render final evidence-backed ruling.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- EnterPro Banner -->
-        <div class="enterpro-banner" id="enterpro-box" style="display:none;">
-          <div>
-            <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#60a5fa; letter-spacing:0.1em; font-weight:700;">ENTERPRO WORKFLOW TRIGGERED</div>
-            <div style="font-size:16px; font-weight:700; color:#fff; margin-top:2px;" id="enterpro-action-text">Action: Tier 2 Department Triage Task Created</div>
-            <div style="font-size:13px; color:#8ba2c4; margin-top:4px;" id="enterpro-action-sub">Dossier sent to Budget Owner with highlighted Exhibit B clause & 1-click dispute notice.</div>
-          </div>
-          <button style="background:#2563eb; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="alert('EnterPro Workflow Action Confirmed! State transitioned in ERP.')">View EnterPro Ticket</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VIEW 2: VENDOR TRUST OBSERVATORY -->
-  <section id="view-observatory" class="view-container">
-    <div class="observatory-grid">
-      <div class="vendor-card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <h3 style="font-size:24px; font-weight:800;">Apex Cloud Consulting</h3>
-            <p style="font-size:13px; color:#888;">Active Contract: MSA-2025-Apex · Tier 1 Dev Vendor</p>
-          </div>
-          <span class="scenario-tag tag-danger">TRUST DECAYING</span>
-        </div>
-
-        <div class="trust-score-row">
-          <div class="score-dial">72<span style="font-size:11px; font-weight:500; color:#aaa;">/100</span></div>
-          <div>
-            <div style="font-size:18px; font-weight:700; color:#fff;">Score dropped 22 points in 6 months</div>
-            <div style="font-size:13px; color:#aaa; margin-top:4px;">Historical Trend: 94 → 89 → 84 → 79 → 75 → 72</div>
-          </div>
-        </div>
-
-        <div style="font-size:14px; line-height:1.7; color:#bbb; border-top:1px solid #1a1a24; padding-top:18px;">
-          <strong style="color:#fff;">Longitudinal Anomaly Analysis:</strong><br>
-          • <span style="color:#ff5e57;">Rate creep:</span> Billed hourly rates grew +2.1% quarterly across 4 consecutive quarters.<br>
-          • <span style="color:#ff5e57;">Scope drift:</span> 3 new unbilled service categories added without PO amendments.<br>
-          • <span style="color:#ffa801;">Remittance delta:</span> Bank wire routing modified 6 weeks ago.<br>
-          • Cumulative hidden uncontracted charge: <strong style="color:#fff;">$18,400.00</strong>.
-        </div>
-      </div>
-
-      <div class="vendor-card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <h3 style="font-size:24px; font-weight:800;">Nova Logistics Ltd</h3>
-            <p style="font-size:13px; color:#888;">Active Contract: MSA-2024-Nova · Freight & Shipping</p>
-          </div>
-          <span class="scenario-tag tag-clean">HIGH INTEGRITY</span>
-        </div>
-
-        <div class="trust-score-row">
-          <div class="score-dial healthy" style="color:#2ed573;">98<span style="font-size:11px; font-weight:500; color:#aaa;">/100</span></div>
-          <div>
-            <div style="font-size:18px; font-weight:700; color:#fff;">Consistent Exemplary History</div>
-            <div style="font-size:13px; color:#aaa; margin-top:4px;">18 Consecutive months of 100% PO match</div>
-          </div>
-        </div>
-
-        <div style="font-size:14px; line-height:1.7; color:#bbb; border-top:1px solid #1a1a24; padding-top:18px;">
-          <strong style="color:#fff;">Vendor Telemetry Signals:</strong><br>
-          • 0 Rate variations over 18 billing cycles.<br>
-          • Invoices match fuel surcharge matrix down to the cent.<br>
-          • Bank remittance destination unchanged since vendor onboarding in 2024.<br>
-          • Eligible for straight-through automated early-payment discounting.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VIEW 3: RED TEAM COMMAND -->
-  <section id="view-redteam" class="view-container">
-    <div class="redteam-grid">
-      <div class="vendor-card">
-        <h3 style="font-size:22px; font-weight:800; margin-bottom:12px;">Automated Financial Penetration Testing</h3>
-        <p style="font-size:14px; color:#888; margin-bottom:20px;">Qwen generates synthetic adversarial invoice vectors to stress-test your approval workflows before real attackers find the holes.</p>
-        <button class="action-primary" onclick="runRedTeamTest()">Launch Adversarial Pen-Test Run</button>
-
-        <div style="margin-top:24px;" id="redteam-output">
-          <div class="attack-row">
-            <div>
-              <div style="font-weight:700; font-size:14px;">Vector 1: Split-Purchase Smurfing ($9.8k + $9.2k)</div>
-              <div style="font-size:12px; color:#888;">Target: $10,000 auto-approval threshold bypass</div>
-            </div>
-            <span class="scenario-tag tag-clean">BLOCKED</span>
-          </div>
-
-          <div class="attack-row">
-            <div>
-              <div style="font-weight:700; font-size:14px;">Vector 2: Micro Rate Inflation (+1.4% above MSA)</div>
-              <div style="font-size:12px; color:#888;">Target: Bypassing 5% variance sensitivity threshold</div>
-            </div>
-            <span class="scenario-tag tag-danger">GAP FOUND</span>
-          </div>
-
-          <div class="attack-row">
-            <div>
-              <div style="font-weight:700; font-size:14px;">Vector 3: Ghost Vendor Inaugural Invoice ($4,500)</div>
-              <div style="font-size:12px; color:#888;">Target: Missing vendor onboarding verification gate</div>
-            </div>
-            <span class="scenario-tag tag-danger">GAP FOUND</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="vendor-card">
-        <h3 style="font-size:22px; font-weight:800; margin-bottom:12px;">EnterPro Auto-Patch Recommendations</h3>
-        <p style="font-size:14px; color:#888; margin-bottom:20px;">Remediation workflows generated directly from Red Team discoveries.</p>
-
-        <div style="background:#0a120c; border:1px solid #1c3c20; border-radius:10px; padding:18px; margin-bottom:14px;">
-          <div style="font-weight:700; font-size:14px; color:#2ed573;">PATCH #1: Rate Variance Sensitivity Tightening</div>
-          <div style="font-size:13px; color:#8ba2c4; margin-top:4px;">Lower threshold from 5.0% to 1.5% for consulting category.</div>
-          <button style="margin-top:10px; background:#1c3c20; color:#2ed573; border:1px solid #2ed573; padding:6px 12px; border-radius:6px; font-size:12px; cursor:pointer;" onclick="alert('EnterPro Policy Patch Deployed!')">Deploy Policy Patch</button>
-        </div>
-
-        <div style="background:#0a120c; border:1px solid #1c3c20; border-radius:10px; padding:18px;">
-          <div style="font-weight:700; font-size:14px; color:#2ed573;">PATCH #2: Mandatory First-Time Vendor Gate</div>
-          <div style="font-size:13px; color:#8ba2c4; margin-top:4px;">Enforce 2-person security sign-off for any payee with 0 prior history.</div>
-          <button style="margin-top:10px; background:#1c3c20; color:#2ed573; border:1px solid #2ed573; padding:6px 12px; border-radius:6px; font-size:12px; cursor:pointer;" onclick="alert('EnterPro Policy Patch Deployed!')">Deploy Policy Patch</button>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"><div class="modal" onclick="event.stopPropagation()"><h3 id="modal-title"></h3><p id="modal-body"></p><div class="modal-actions"><button class="btn-outline" onclick="closeModal()">Cancel</button><button class="btn" id="modal-confirm">Confirm</button></div></div></div>
 
 <script>
-  let currentScenario = 1;
-
-  function switchTab(tabId) {
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.view-container').forEach(view => view.classList.remove('active'));
-
-    event.target.classList.add('active');
-    document.getElementById('view-' + tabId).classList.add('active');
-  }
-
-  function selectScenario(id) {
-    currentScenario = id;
-    document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('selected'));
-    document.getElementById('scen-' + id).classList.add('selected');
-
-    const titleEl = document.getElementById('stage-invoice-title');
-    const subEl = document.getElementById('stage-invoice-sub');
-    const enterproBox = document.getElementById('enterpro-box');
-    enterproBox.style.display = 'none';
-
-    if (id === 1) {
-      titleEl.innerText = "Invoice #INV-4089: Apex Cloud Consulting";
-      subEl.innerText = "Matching against Master Service Agreement MSA-2025-Apex (Exhibit B)";
-    } else if (id === 2) {
-      titleEl.innerText = "Invoice #INV-9120: CyberCore Inc";
-      subEl.innerText = "Audit: $64,000 IT Security Services · Wire Route Check";
-    } else {
-      titleEl.innerText = "Invoice #INV-1033: Nova Logistics Ltd";
-      subEl.innerText = "Audit: $3,450 Freight & Transport · 3-Way PO Reconciliation";
-    }
-
-    resetStream();
-  }
-
-  function resetStream() {
-    document.getElementById('stream-pros').innerHTML = '<div class="speech-card" style="color:#666;">Ready for debate. Click "Trigger Live Tribunal Audit".</div>';
-    document.getElementById('stream-def').innerHTML = '<div class="speech-card" style="color:#666;">Awaiting prosecutor findings.</div>';
-    document.getElementById('stream-judge').innerHTML = '<div class="speech-card" style="color:#666;">Awaiting arguments.</div>';
-    document.getElementById('status-pros').innerText = 'IDLE';
-    document.getElementById('status-def').innerText = 'IDLE';
-    document.getElementById('status-judge').innerText = 'IDLE';
-  }
-
-  function runTribunalDebate() {
-    resetStream();
-    const pros = document.getElementById('stream-pros');
-    const def = document.getElementById('stream-def');
-    const judge = document.getElementById('stream-judge');
-    const enterproBox = document.getElementById('enterpro-box');
-
-    document.getElementById('status-pros').innerText = 'ANALYZING...';
-
-    setTimeout(() => {
-      document.getElementById('status-pros').innerText = 'ACTIVE';
-      if (currentScenario === 1) {
-        pros.innerHTML = `
-          <div class="speech-card sustained"><strong>Finding 1:</strong> Hourly rate billed at $165/hr vs contracted cap of $140/hr (Exhibit B, §4.2). Overcharge: <strong>+$3,000.00</strong>.</div>
-          <div class="speech-card"><strong>Finding 2:</strong> Invoice submission timestamp recorded on a Sunday.</div>
-          <div class="speech-card"><strong>Finding 3:</strong> Line item lists "Architecture Consulting" not in baseline PO.</div>
-        `;
-      } else if (currentScenario === 2) {
-        pros.innerHTML = `
-          <div class="speech-card sustained"><strong>CRITICAL SIGNAL:</strong> Remittance wire routing modified 24 hours prior to $64,000 submission. High-probability Business Email Compromise (BEC).</div>
-        `;
-      } else {
-        pros.innerHTML = `
-          <div class="speech-card" style="border-color:#2ed573; color:#2ed573;"><strong>0 Findings:</strong> All 12 line items match Purchase Order PO-8821 down to the cent. Rate card 100% compliant.</div>
-        `;
-      }
-
-      document.getElementById('status-def').innerText = 'REBUTTING...';
-    }, 600);
-
-    setTimeout(() => {
-      document.getElementById('status-def').innerText = 'ACTIVE';
-      if (currentScenario === 1) {
-        def.innerHTML = `
-          <div class="speech-card sustained"><strong>Rebuttal 1:</strong> No amendment on file authorizes $165. Rate card inflation finding is <strong>SUSTAINED</strong>.</div>
-          <div class="speech-card dismissed"><strong>Rebuttal 2:</strong> Vendor headquarters is in UTC+5:30. Time was Monday 10:14 AM local time. <strong>DISMISSED</strong>.</div>
-          <div class="speech-card dismissed"><strong>Rebuttal 3:</strong> PO Addendum #3 signed March 4th added Architecture scope. <strong>DISMISSED</strong>.</div>
-        `;
-      } else if (currentScenario === 2) {
-        def.innerHTML = `
-          <div class="speech-card sustained"><strong>Rebuttal:</strong> Vendor primary contact confirms NO wire details were updated through verified verbal channels. <strong>FRAUD RISK CONFIRMED</strong>.</div>
-        `;
-      } else {
-        def.innerHTML = `
-          <div class="speech-card" style="border-color:#2ed573; color:#2ed573;"><strong>Confirmed Clean:</strong> Verified against shipping bill of lading. Zero contractual discrepancies.</div>
-        `;
-      }
-
-      document.getElementById('status-judge').innerText = 'RULING...';
-    }, 1400);
-
-    setTimeout(() => {
-      document.getElementById('status-judge').innerText = 'VERDICT REACHED';
-      if (currentScenario === 1) {
-        judge.innerHTML = `
-          <div class="speech-card final">
-            <div style="font-size:11px; color:#ffa801; font-weight:700; font-family:'JetBrains Mono';">RULING: 1 SUSTAINED · 2 DISMISSED</div>
-            <div style="font-size:16px; font-weight:800; margin:6px 0;">Rate Card Overcharge: $3,000.00</div>
-            <div style="font-size:12.5px; color:#ccc;">Confidence: 0.98 · Evidence: MSA-2025-Apex Exhibit B §4.2</div>
-            <div style="margin-top:10px; font-size:12px; color:#60a5fa;"><strong>EnterPro Action:</strong> Route to Department Head with 1-click adjusted approval for $16,800.00.</div>
-          </div>
-        `;
-        enterproBox.style.display = 'flex';
-        document.getElementById('enterpro-action-text').innerText = "Action: Tier 2 Department Triage Task Created ($3,000 Overcharge)";
-        document.getElementById('enterpro-action-sub').innerText = "Dossier sent to Budget Owner with highlighted Exhibit B clause & auto-drafted dispute note.";
-      } else if (currentScenario === 2) {
-        judge.innerHTML = `
-          <div class="speech-card final" style="border-color:#ff4757; background:#180608;">
-            <div style="font-size:11px; color:#ff4757; font-weight:700; font-family:'JetBrains Mono';">RULING: CRITICAL FRAUD BLOCKED</div>
-            <div style="font-size:16px; font-weight:800; margin:6px 0;">Wire Substitution ($64,000.00)</div>
-            <div style="font-size:12.5px; color:#ccc;">Confidence: 1.00 · Evidence: Hash mismatch on verified vendor IBAN</div>
-            <div style="margin-top:10px; font-size:12px; color:#ff4757;"><strong>EnterPro Action:</strong> Instant payment freeze. Escalate to CFO & Security Controller.</div>
-          </div>
-        `;
-        enterproBox.style.display = 'flex';
-        document.getElementById('enterpro-action-text').innerText = "Action: Tier 3 Emergency Payment Freeze Activated ($64,000)";
-        document.getElementById('enterpro-action-sub').innerText = "ERP payment rails locked for CyberCore. High-priority fraud incident ticket opened for Controller.";
-      } else {
-        judge.innerHTML = `
-          <div class="speech-card final" style="border-color:#2ed573; background:#06140a;">
-            <div style="font-size:11px; color:#2ed573; font-weight:700; font-family:'JetBrains Mono';">RULING: 100% RECONCILED CLEAN</div>
-            <div style="font-size:16px; font-weight:800; margin:6px 0;">Straight-Through Approval: $3,450.00</div>
-            <div style="font-size:12.5px; color:#ccc;">Confidence: 0.99 · Evidence: Perfect 3-way match against PO-8821</div>
-            <div style="margin-top:10px; font-size:12px; color:#2ed573;"><strong>EnterPro Action:</strong> Auto-post to General Ledger. Scheduled for 2% early-pay discount.</div>
-          </div>
-        `;
-        enterproBox.style.display = 'flex';
-        document.getElementById('enterpro-action-text').innerText = "Action: Tier 1 Straight-Through Auto-Reconcile ($3,450)";
-        document.getElementById('enterpro-action-sub').innerText = "Transaction posted to GL. Scheduled for discount release. 0 human intervention required.";
-      }
-    }, 2200);
-  }
-
-  function runRedTeamTest() {
-    alert("Red Team Pen-Test Run Complete! Generated 5 synthetic adversarial vectors against active EnterPro approval thresholds. 2 policy vulnerabilities identified.");
-  }
+function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('v-'+id).classList.add('active');event.target.closest('.nav-item').classList.add('active');const t={dashboard:'Dashboard',copilot:'Voice Copilot (Sarvam AI)',suppliers:'Supplier Ledger & Bill Audit',cashflow:'Cashflow & Working Capital',automation:'Automations (n8n + Cognee)'};document.getElementById('page-title').textContent=t[id]}
+function drawChart(id,d){const el=document.getElementById(id);if(!el)return;const mx=Math.max(...d.map(x=>x.v));el.innerHTML=d.map(x=>`<div class="bar-col"><div class="bar-val">&#8377;${(x.v/1e3).toFixed(0)}k</div><div class="bar" style="height:${Math.max(8,x.v/mx*140)}px;background:#fff"></div><div class="bar-label">${x.l}</div></div>`).join('')}
+drawChart('rev-chart',[{l:'Mon',v:42e3},{l:'Tue',v:38500},{l:'Wed',v:45200},{l:'Thu',v:41800},{l:'Fri',v:52300},{l:'Sat',v:58100},{l:'Sun',v:48700}]);
+drawChart('cf-chart',[{l:'Mon',v:48e3},{l:'Tue',v:44e3},{l:'Wed',v:52e3},{l:'Thu',v:46e3},{l:'Fri',v:55e3},{l:'Sat',v:61e3},{l:'Sun',v:50e3}]);
+const R={'aaj kitna galla aaya':['Aaj ka total: <strong>&#8377;48,720</strong><br>UPI: &#8377;42,180 (298) | Card: &#8377;5,420 (31) | Cash: &#8377;1,120 (13)<br>Kal se 12.3% zyada. Peak: 10-11 AM.','SARVAM + SOUNDBOX'],'amul waale ko kitna dena':['Amul ko <strong>&#8377;32,400</strong> baaki. Due Sep 12 (3 din overdue).<br>Last bill mein &#8377;180 overcharge (&#8377;117 vs &#8377;108/unit).','COGNEE + AUDIT'],'rajesh ka khata':['Rajesh: <strong>&#8377;3,200</strong> baaki. 14 din. Mon/Thu visits (~&#8377;450). Late hai.','COGNEE GRAPH'],'best selling':['Top sellers:<br>1. Amul Gold 1L - 48 units<br>2. Bread - 42<br>3. Thums Up - 38<br>4. Parle-G - 35<br>5. Maggi - 30','ANALYTICS'],'default':['Try: revenue data, supplier payments, khata, stock suggestions.','QORA']};
+function findR(t){const l=t.toLowerCase().replace(/[?!,.]/g,'');for(const k in R){if(k==='default')continue;if(k.split(' ').every(w=>l.includes(w)))return R[k]}return R['default']}
+function sendMsg(){const i=document.getElementById('chat-in'),t=i.value.trim();if(!t)return;i.value='';const m=document.getElementById('chat-msgs');m.innerHTML+=`<div class="msg user">${t}</div>`;m.scrollTop=m.scrollHeight;setTimeout(()=>{const[r,s]=findR(t);m.innerHTML+=`<div class="msg bot">${r}<span class="src">${s}</span></div>`;m.scrollTop=m.scrollHeight},500)}
+let rec=false;function toggleVoice(){const b=document.getElementById('voice-btn');rec=!rec;if(rec){b.classList.add('recording');b.innerHTML='&#9209;';setTimeout(()=>{if(rec){rec=false;b.classList.remove('recording');b.innerHTML='&#127908;';document.getElementById('chat-in').value='Aaj kitna galla aaya?';sendMsg()}},2e3)}else{b.classList.remove('recording');b.innerHTML='&#127908;'}}
+function openModal(t){const o=document.getElementById('modal-overlay'),ti=document.getElementById('modal-title'),bo=document.getElementById('modal-body'),co=document.getElementById('modal-confirm');if(t==='dispute'){ti.textContent='Dispute Overcharge';bo.innerHTML='Amul #AMU-2609: &#8377;2,340 vs &#8377;2,160. Overcharge &#8377;180.<br>Sends dispute via WhatsApp.';co.textContent='Dispute';co.onclick=()=>{alert('Dispute sent via n8n');closeModal()}}else{ti.textContent='Sachet Micro-Credit';bo.innerHTML='&#8377;25,000 | 1.2%/mo | 30 days | Auto-debit daily.<br>Repayment ~18 days.';co.textContent='Apply';co.onclick=()=>{alert('&#8377;25,000 credited!');closeModal()}}o.classList.add('open')}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
 </script>
-
 </body>
 </html>
