@@ -1,51 +1,84 @@
 ﻿# Qora — Autonomous AI Business Partner for Paytm Merchants
 
 > **Track 1:** Merchant Growth AI — Build the AI business partner for every Paytm merchant  
-> **Stack:** Sarvam AI (Voice) + n8n (Automation) + Cognee (Memory)
-
-## Live Demo
-**[https://fursatiinsaan.github.io/Qora/](https://fursatiinsaan.github.io/Qora/)**
+> **Submission Round:** Official Pitch Deck & Working Demonstration  
+> **Tech Stack:** Sarvam AI (Voice Copilot) + n8n (Autonomous Orchestration) + Cognee (E-C-L Memory Graph) + Paytm AI Soundbox & Lending APIs
 
 ---
 
-## The Problem
-India's 30M+ small merchants manage their businesses with mental math, paper khatas, and WhatsApp messages. They lose money to supplier overcharges, missed credit collections, stockouts, and cashflow gaps — problems that scale with business growth.
+## 🔗 Quick Links
+- **Interactive Live Demo:** [https://fursatiinsaan.github.io/Qora/](https://fursatiinsaan.github.io/Qora/)
+- **Pitch Deck (PDF):** [Download Qora_Pitch_Deck.pdf](https://github.com/fursatiinsaan/Qora/raw/main/Qora_Pitch_Deck.pdf)
+- **Pitch Deck (PPTX):** [Download Qora_Pitch_Deck.pptx](https://github.com/fursatiinsaan/Qora/raw/main/Qora_Pitch_Deck.pptx)
 
-## What Qora Does
-Qora turns every Paytm AI Soundbox into an intelligent business co-pilot that speaks the merchant's language.
+---
 
-### Core Capabilities
-| Feature | How It Works | Tech |
-|---|---|---|
-| **Voice-First Copilot** | Merchant asks "Aaj kitna galla aaya?" in Hindi/Tamil/Kannada — gets instant answer from Soundbox data | Sarvam Saaras v4 STT + TTS (22+ Indic languages) |
-| **Supplier Bill Audit** | WhatsApp invoice images auto-scanned, line items extracted, rates cross-checked against contracted prices | n8n OCR workflow + Cognee rate memory |
-| **Khata Management** | Tracks customer credit, auto-sends vernacular WhatsApp reminders when overdue | Cognee customer graph + n8n WhatsApp API |
-| **Cashflow Forecasting** | Predicts cash position from Soundbox velocity, pre-qualifies for Paytm sachet micro-loans | Cognee temporal analysis |
-| **Smart Restocking** | Detects sales velocity spikes, predicts stockouts, auto-drafts reorders to distributors | n8n webhook + Cognee inventory nodes |
-| **Festival Demand** | Seasonal memory from Cognee predicts demand changes before Navratri, Diwali, etc. | Cognee seasonal knowledge graph |
+## 📌 Executive Summary
+India's 30M+ small merchants run daily commerce on mental math, paper khatas, and manual WhatsApp coordination. They lose thousands every month to unnoticed supplier overcharges, chronic credit delays, stockouts, and working capital crunches.
 
-### Architecture
+**Qora** converts existing **Paytm Soundbox** infrastructure into a proactive, multilingual AI business partner that manages back-office operations autonomously in the merchant's native language.
+
+---
+
+## 💡 Key Innovations & Capabilities
+
+### 1. Voice-First Multilingual Copilot (Sarvam AI)
+- **Native Indic Interaction:** Speaks and listens across 11+ Indian languages (Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, etc.) using Sarvam Saaras v4 STT & TTS.
+- **Code-Mixing Support:** Seamlessly parses colloquial queries (e.g. *"Aaj kitna galla aaya?"*, *"Amul waale ko kitna dena hai?"*).
+- **Sub-Second Streaming:** Real-time WebSocket streaming with zero app fatigue.
+
+### 2. Autonomous Supplier Bill Audit Engine
+- **Automated Ingestion:** Merchants forward supplier invoices or delivery receipts via WhatsApp.
+- **Contract Verification:** Extracted line items are cross-checked against contracted rates stored in Cognee memory.
+- **Dispute Automation:** Flags overcharges instantly (e.g. rate drift on dairy or staples) and drafts pre-filled dispute notices to distributors.
+
+### 3. Long-Term Merchant Knowledge Graph (Cognee)
+- **Extract-Cognify-Load (E-C-L) Pipeline:** Persists semantic relationships across 800+ nodes.
+- **Customer Profiles:** Tracks purchase frequency, average basket size, and credit repayment discipline.
+- **Seasonal Demand Forecasting:** Anticipates seasonal spikes (e.g. Navratri snack surges vs. dairy dips; Diwali dry fruits).
+
+### 4. Smart Khata & Cashflow Automation (n8n)
+- **Credit Collection Workflows:** Auto-triggers polite, localized WhatsApp audio and text reminders when khata accounts exceed grace periods.
+- **Sachet Working Capital:** Evaluates real-time Soundbox inflow velocity to pre-qualify merchants for instant micro-credit (₹25K–₹75K) with daily auto-debit settlements.
+- **Stockout Prevention:** Automatically calculates burn rates and drafts distributor purchase orders 24 hours prior to stock depletion.
+
+---
+
+## 🏗 System Architecture
+
 ```
-Paytm AI Soundbox (UPI/NFC/QR) ──> Sarvam Saaras v4 (STT/TTS)
-                                         │
-                                    Qora Engine
-                                    ├── Bill Audit
-                                    ├── Cashflow Predictor
-                                    ├── Khata Manager
-                                    └── Restock Engine
-                                         │
-                              ┌──────────┼──────────┐
-                              ▼          ▼          ▼
-                           Cognee     n8n          Paytm
-                         (Memory)  (Automation)  (Lending)
-                         847 nodes  7 workflows  Sachet Loans
+Paytm AI Soundbox (UPI / NFC / QR)
+       │
+       ▼
+Sarvam Saaras v4 (STT / Indic NLP) ◄──► Sarvam TTS (Voice Response)
+       │
+       ▼
+  Qora Engine (Core Orchestrator)
+  ├── Supplier Audit Module
+  ├── Khata & Credit Engine
+  ├── Cashflow & Velocity Scorer
+  └── Restock Predictor
+       │
+       ├─────────────────────────┬─────────────────────────┐
+       ▼                         ▼                         ▼
+Cognee Memory Graph          n8n Workflow Engine       Paytm APIs
+- Customer Behavior Nodes    - WhatsApp Business API   - Soundbox Ingestion
+- Contracted Price Ledger    - Invoice OCR & Audit     - Sachet Lending
+- Seasonal Trend Memory      - Daily P&L Broadcast     - Settlement Hook
 ```
 
-### Tech Stack
-- **Voice:** Sarvam Saaras v4 (STT) + Mayura (Translation) + TTS — WebSocket streaming, 22+ languages
-- **Memory:** Cognee Extract-Cognify-Load pipeline — LanceDB vector store, persistent knowledge graph
-- **Automation:** n8n — WhatsApp Business API triggers, cron workflows, webhook chains
-- **Payments:** Paytm AI Soundbox API — UPI, NFC Tap, Dynamic QR, Card
+---
 
-## Run Locally
-Open `index.html` in any browser. No dependencies required.
+## 📊 Presentation Deck Structure (7 Slides)
+1. **Title & Vision:** Autonomous AI Business Partner for Every Paytm Merchant
+2. **The Problem:** The Hidden Leakages of India's 30M+ Merchants (Overcharges, Khata Defaults, Manual Drag)
+3. **The Solution:** The 3-Tier AI Stack (Sarvam AI + Cognee + n8n)
+4. **System Architecture & Tech Stack:** Data flow from Soundbox to Memory & Automation
+5. **Product Features:** 6 Core Capabilities in One Platform
+6. **Impact & Paytm Moat:** Revenue generation, retention, and merchant unit economics
+7. **Summary & Verification:** Live Links and Deployment
+
+---
+
+## 🚀 Running Locally
+Simply clone the repository and open `index.html` in any browser. No installation or build steps required.
